@@ -1,6 +1,29 @@
 import streamlit as st
 import random as rd
 
+st.markdown("""
+<style>
+.stApp {
+    background-color: #0F172A;
+}
+</style>
+""", unsafe_allow_html=True)
+st.markdown("""
+<style>
+div.stButton > button {
+    background-color: #F97316;
+    color: white;
+    border-radius: 10px;
+    border: none;
+
+div.stButton > button:hover {
+    background-color: #EA580C;
+}
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 if "wins" not in st.session_state:
     st.session_state.wins = 0
 if "losses" not in st.session_state:
@@ -13,6 +36,16 @@ if "difficulty" not in st.session_state:
     st.session_state.difficulty = "Easy"
 if "rounds" not in st.session_state:
     st.session_state.rounds = 5
+if "theme" not in st.session_state:
+    st.session_state.theme = "#FFFFFF"
+
+st.sidebar.markdown("""<style>
+[data-testid="stSidebar"] {
+    background-color: #1E293B;
+}
+</style>
+""", unsafe_allow_html=True)
+    
 st.sidebar.title("Game Settings")
 
 
@@ -24,7 +57,55 @@ for var, default in [("wins",0), ("losses",0), ("draws",0), ("round_count",0), (
 
 menu = st.sidebar.radio( "Navigation" , ["Home", "Play Game", "Settings", "About"])
 if menu == "Home":
-    st.write("Welcome to the Rock Paper Scissors Game! Use the sidebar to navigate through the game and settings.")
+
+    col1, col2 = st.columns(2)
+    with col1:
+            st.image("images/RPS.png", width = 300 )
+    with col2:
+            st.title("Welcome to Rock Paper Scissors Game!")
+
+
+    st.write("""
+    - Navigate using the sidebar to **Play Game**, adjust **Settings**, or learn more **About** the game.
+    - In the **Play Game** section, select your move and see how you fare against the computer. Keep track of your wins, losses, and draws on the scoreboard.
+    - Check your **Scoreboard** to see your wins, losses,draws.
+    - Use **Settings** to change difficulty and number of rounds.
+    - Click **Reset Score** to start fresh and challenge yourself again!
+    """)
+    
+    st.header("Features:")
+    st.markdown("""  
+    
+        - Track wins, losses, and draws immediately after each round.
+        - Play multiple rounds with adjustable settings for difficulty and number of rounds.
+        - Fun and Interactive UI with Immediate Feedback on Game Results.
+    """)
+
+    st.header("How to Play")
+    st.write("""    
+    1. Select "Play Game" from the sidebar.
+    2. Choose your move (Rock, Paper, or Scissors) from the dropdown.
+    3. Click the "Play" button to see the computer's move and the result of the round.
+    4. Keep track of your wins, losses, and draws on the  scoreboard.
+    5. Adjust the difficulty and number of rounds in the "Settings" section to increase the challenge.
+    6. Click "Reset Score" to start a new game and see if you can improve your score!
+    """)
+
+    st.header("Game Rules")
+    st.write("""
+    - Rock beats Scissors
+    - Scissors beats Paper
+    - Paper beats Rock
+    - If both players choose the same move, it's a draw.
+    """)
+
+    st.header("Difficulty Levels")
+    st.write("""
+    - **Easy**: Computer chooses moves randomly with equal probability.
+    - **Medium**: Computer favors certain moves based on weighted probabilities.
+    - **Hard**: Computer always tries to beat the player's move.
+    """)
+
 
 
 
@@ -98,13 +179,25 @@ elif menu == "Play Game":
        
     
 elif menu == "Settings":
-    st.title("Game Settings")
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+         st.session_state.theme = st.color_picker("", st.session_state.get("theme", "#FFFFFF"), width=5000) 
+        
+
+    with col2:
+        st.markdown(
+        f"<h1 style='color:{st.session_state.theme}; margin:0'>Game Settings</h1>"
+        f"</div>", unsafe_allow_html=True)
+              
+        
+    
     st.session_state.difficulty = st.selectbox(
         "Select Difficulty", ["Easy", "Medium", "Hard"], index= ["Easy", "Medium", "Hard"].index(st.session_state.difficulty)
         
         )
     
-
+    
     st.session_state.rounds = st.slider(
         "Number of Rounds",
         min_value=1,
@@ -113,11 +206,13 @@ elif menu == "Settings":
     )
     
 
-    theme = st.color_picker("Theme Color")
+    
 
     tips = st.checkbox("Show Tips", value=False)
     if tips:
        st.info("Tips: Rock beats Paper!")
+       Video_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+       st.video(Video_url, autoplay = True)
 
     if st.button("Reset Score"):
         st.session_state.wins = 0
@@ -131,10 +226,10 @@ elif menu == "Settings":
 elif menu == "About":
     st.title("About This Game")
     st.header("Use Case")
-    st.write("This app allows users to play a simple Rock Paper Scissors game against the computer.")
+    st.write("This app allows users to play a simple **Rock Paper Scissors** game against the computer.")
 
     st.header("Target Users")
-    st.write("This game is designed for anyone who wants to play a quick game of Rock Paper Scissors against the computer.")
+    st.write("This game is designed for anyone who wants to play a quick game of **Rock Paper Scissors** against the computer.")
 
     st.header("Inputs Collected")
     st.markdown("""
@@ -146,7 +241,7 @@ elif menu == "About":
     st.markdown("""
     - Computer's Move
     - Game Result (Win, Lose, Draw)
-    -Score Statistics """)
+    - Score Statistics """)
 
 
 
