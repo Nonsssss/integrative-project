@@ -235,6 +235,7 @@ elif menu == "About":
     st.markdown("""
     - Player Move (Rock, Paper, Scissors)
     - Computer Move (Randomly Generated)
+    - Number of Rounds
     """)
 
     st.header("Outputs Displayed")
